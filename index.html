@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Entorno VR con una interfaz cerebro-computadora simulada, creado con A-Frame.">
+  <title>VR + Interfaz Cerebro-Computadora (BCI)</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+</head>
+<body>
+  <main id="panel" aria-label="Controles del dispositivo BCI simulado">
+    <h1>🧠 Diadema BCI (simulada)</h1>
+    <p class="author">Autor: <strong>Angel Valle</strong></p>
+
+    <div class="metric">
+      <label>Atención <span id="attn-v">0%</span></label>
+      <div class="bar" id="attn" role="progressbar" aria-label="Atención" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span></span></div>
+    </div>
+
+    <div class="metric">
+      <label>Meditación <span id="medi-v">0%</span></label>
+      <div class="bar" id="medi" role="progressbar" aria-label="Meditación" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span></span></div>
+    </div>
+
+    <button id="connect" type="button">Conectar dispositivo</button>
+    <button id="blink" class="off" type="button">Simular parpadeo (acción) · <kbd>Espacio</kbd></button>
+
+    <div class="status" id="status" aria-live="polite">
+      Estado: <b>desconectado</b><br>
+      • La <b>atención</b> eleva y agranda la esfera.<br>
+      • La <b>meditación</b> cambia su color (frío→cálido).<br>
+      • Un <b>parpadeo</b> dispara un pulso/teletransporte.
+    </div>
+  </main>
+
+  <a-scene background="color: #0d1020" renderer="colorManagement: true">
+    <a-entity id="rig" position="0 1.6 4">
+      <a-camera wasd-controls look-controls></a-camera>
+    </a-entity>
+
+    <a-light type="ambient" color="#445"></a-light>
+    <a-light type="point" intensity="0.9" position="2 4 4"></a-light>
+
+    <a-plane rotation="-90 0 0" width="40" height="40" color="#1a1f3a" material="shader: flat"></a-plane>
+
+    <a-sphere id="orb" position="0 1.5 -3" radius="0.6" color="#2a9df4"
+      material="metalness: 0.3; roughness: 0.4">
+      <a-animation attribute="rotation" to="0 360 0" dur="8000" repeat="indefinite" easing="linear"></a-animation>
+    </a-sphere>
+
+    <a-ring id="pulse" position="0 1.5 -3" radius-inner="0.7" radius-outer="0.8"
+      color="#3ad6c0" visible="false" material="shader: flat; opacity: 0.8; transparent: true"></a-ring>
+
+    <!-- Objeto agregado para la práctica: toro flotante animado -->
+    <a-torus id="extra-object" position="2.35 1.55 -4" color="#b56cff"
+      radius="0.72" radius-tubular="0.13" material="metalness: 0.65; roughness: 0.22"
+      animation="property: rotation; to: 360 360 0; loop: true; dur: 9000; easing: linear"
+      animation__float="property: position; from: 2.35 1.35 -4; to: 2.35 1.9 -4; dir: alternate; loop: true; dur: 2200; easing: easeInOutSine">
+    </a-torus>
+
+    <!-- Nombre y apellido visibles dentro del entorno VR -->
+    <a-entity position="-2.8 2.4 -4" rotation="0 12 0">
+      <a-plane width="3.5" height="0.9" color="#11172d" opacity="0.9"></a-plane>
+      <a-text value="Angel Valle" align="center" color="#ffffff" width="4.8" position="0 0.1 0.01"></a-text>
+      <a-text value="Interaccion Hombre-Maquina" align="center" color="#3ad6c0" width="3.3" position="0 -0.22 0.01"></a-text>
+    </a-entity>
+
+    <a-text id="hud3d" value="" position="-1.2 2.6 -3" color="#fff" width="4"></a-text>
+  </a-scene>
+
+  <script src="script.js"></script>
+</body>
+</html>
